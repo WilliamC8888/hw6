@@ -9,6 +9,8 @@
 #include <exception>
 #endif
 
+
+//final push
 #include "boggle.h"
 
 std::vector<std::vector<char> > genBoard(unsigned int n, int seed)
@@ -95,5 +97,26 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
 //add your solution here!
-
+    if ( c>= board.size() || r>= board.size()){
+        return false;
+    }
+    
+    word += board[r][c];
+    
+    //if not prefix stop recurs
+    if(prefix.find(word)==prefix.end() && dict.find(word)==dict.end()){
+        return false;
+    }
+    
+    bool longerFlag = false; //turn true if find longer word
+    
+    if(boggleHelper(dict, prefix, board, word, result, r+dr,c+dc,dr,dc)){
+        longerFlag = true;
+    }
+    
+    if(dict.find(word) != dict.end() && !longerFlag){
+        result.insert(word);
+        return true;
+    }
+    return longerFlag;
 }
